@@ -7,17 +7,17 @@ var token = "EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJ
 
 function sendTextMessage(sender, text) {
   messageData = {
-    text:text
+    text: text
   };
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
+    qs: {access_token: token},
     method: 'POST',
     json: {
-      recipient: {id:sender},
+      recipient: {id: sender},
       message: messageData,
     }
-  }, function(error, response, body) {
+  }, function (error, response, body) {
     if (error) {
       console.log('Error sending message: ', error);
     } else if (response.body.error) {
@@ -45,7 +45,7 @@ function sendGenericMessage(sender) {
             "title": "Postback",
             "payload": "Payload for first element in a generic bubble",
           }],
-        },{
+        }, {
           "title": "Second card",
           "subtitle": "Element #2 of an hscroll",
           "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
@@ -60,13 +60,13 @@ function sendGenericMessage(sender) {
   };
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
+    qs: {access_token: token},
     method: 'POST',
     json: {
-      recipient: {id:sender},
+      recipient: {id: sender},
       message: messageData,
     }
-  }, function(error, response, body) {
+  }, function (error, response, body) {
     if (error) {
       console.log('Error sending message: ', error);
     } else if (response.body.error) {
@@ -77,20 +77,11 @@ function sendGenericMessage(sender) {
 
 app.set('port', (process.env.PORT || 5000));
 
-app.use(express.static(__dirname + '/public'));
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({extended: false}))
 
 // parse application/json
 app.use(bodyParser.json())
-
-// views is directory for all template files
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
-app.get('/', function(request, response) {
-  response.send('Hello World');
-});
 
 app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
@@ -99,18 +90,19 @@ app.post('/webhook/', function (req, res) {
     sender = event.sender.id;
     if (event.message && event.message.text) {
       text = event.message.text;
+      console.log(text);
       // Handle a text message from this sender
       if (text === 'Generic') {
-	    sendGenericMessage(sender);
-	    continue;
-	  } else {
-	  	sendTextMessage(sender, "Text received, echo: "+ text.substring(0, 200));
-	  }
+        sendGenericMessage(sender);
+        continue;
+      } else {
+        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
+      }
     }
   }
   res.sendStatus(200);
 });
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
   console.log('Node app is running on port', app.get('port'));
 });
