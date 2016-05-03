@@ -13,13 +13,13 @@ app.get('/', function(request, response) {
   res.send('Hello World');
 });
 
-app.get('/webhook/', function (req, res) {
-  if (req.query['hub.verify_token'] === 'EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD') {
-    res.send(req.query['hub.challenge']);
+app.get('/webhook/', function (request, response) {
+  if (request.query['hub.verify_token'] === 'EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD') {
+    response.send(request.query['hub.challenge']);
   }
-  res.send('Error, wrong validation token');
-})
+  response.send('Error, wrong validation token');
+});
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
-});
+}); gf
