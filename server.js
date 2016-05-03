@@ -3,12 +3,12 @@
 const Hapi = require('hapi');
 
 // Create a server with a host and port
-const server =  new Hapi.Server(~~process.env.PORT || 3000, '0.0.0.0');
+const server =  new Hapi.Server(process.env.PORT || 3000, '0.0.0.0');
 
 // Add the route
 server.route({
     method: 'GET',
-    path:'/webhook',
+    path:'/',
     handler: function (request, reply) {
 
         return reply('hello world');
