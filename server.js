@@ -10,7 +10,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
-  res.send('Hello World');
+  response.send('Hello World');
 });
 
 app.get('/webhook/', function (request, response) {
