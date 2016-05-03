@@ -19,6 +19,17 @@ server.route({
     }
 });
 
+
+server.route({
+    method: 'GET',
+    path:'/webhook',
+    handler: function (request, reply) {
+
+        return reply('webhook');
+    }
+});
+
+
 // Start the server
 server.start((err) => {
 
