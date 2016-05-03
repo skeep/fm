@@ -3,7 +3,11 @@
 const Hapi = require('hapi');
 
 // Create a server with a host and port
-const server =  new Hapi.Server(+process.env.PORT, '0.0.0.0');
+// const server = new Hapi.Server();
+server.connection({
+    host: '0.0.0.0',
+    port: +process.env.PORT
+});
 
 // Add the route
 server.route({
