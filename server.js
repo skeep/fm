@@ -13,11 +13,17 @@ app.get('/', function(request, response) {
   response.send('Hello World');
 });
 
-app.get('/webhook/', function (request, response) {
-  if (request.query['hub.verify_token'] === 'EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD') {
-    response.send(request.query['hub.challenge']);
+app.post('/webhook/', function (req, res) {
+  messaging_events = req.body.entry[0].messaging;
+  for (i = 0; i < messaging_events.length; i++) {
+    event = req.body.entry[0].messaging[i];
+    sender = event.sender.id;
+    if (event.message && event.message.text) {
+      text = event.message.text;
+      // Handle a text message from this sender
+    }
   }
-  response.send('Error, wrong validation token');
+  res.sendStatus(200);
 });
 
 app.listen(app.get('port'), function() {
