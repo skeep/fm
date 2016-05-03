@@ -1,41 +1,25 @@
-'use strict';
+var express = require('express');
+var app = express();
 
-const Hapi = require('hapi');
+app.set('port', (process.env.PORT || 5000));
 
-// Create a server with a host and port
-const server = new Hapi.Server();
-server.connection({
-  host: '0.0.0.0',
-  port: +process.env.PORT
+app.use(express.static(__dirname + '/public'));
+
+// views is directory for all template files
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
+app.get('/', function(request, response) {
+  res.send('Hello World');
 });
 
-// Add the route
-server.route({
-  method: 'GET',
-  path: '/',
-  handler: function (request, reply) {
-
-    return reply('hello world');
+app.get('/webhook/', function (req, res) {
+  if (req.query['hub.verify_token'] === 'EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD') {
+    res.send(req.query['hub.challenge']);
   }
-});
+  res.send('Error, wrong validation token');
+})
 
-server.route({
-  method: 'GET',
-  path: '/webhook',
-  handler: function (request, reply) {
-
-    if (request.query['hub.verify_token'] === 'EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD') {
-      return reply(request.query['hub.challenge']);
-    }
-    return reply('Error, wrong validation token');
-  }
-});
-
-// Start the server
-server.start((err) => {
-
-  if (err) {
-    throw err;
-  }
-  console.log('Server running at:', server.info.uri);
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
