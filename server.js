@@ -1,13 +1,14 @@
 var express = require('express');
 var app = express();
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var request = require('request');
 
 var token = "EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD";
 
 function sendTextMessage(sender, text) {
   messageData = {
     text:text
-  }
+  };
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {access_token:token},
@@ -43,7 +44,6 @@ app.get('/', function(request, response) {
 });
 
 app.post('/webhook/', function (req, res) {
-	console.log(req);
   messaging_events = req.body.entry[0].messaging;
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i];
