@@ -3,50 +3,16 @@ var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
 
-var bill = {
-  "attachment": {
-    "type": "template",
-    "payload": {
-      "template_type": "generic",
-      "elements": [
-        {
-          "title": "Bill detail for May 2016",
-          "image_url": "http://petersapparel.parseapp.com/img/item100-thumb.png",
-          "subtitle": "You don't have any bill due. Next bill generation date is 4-April-16",
-          "buttons": [
-            {
-              "type": "web_url",
-              "url": "https://www.google.com",
-              "title": "Bill details"
-            }, {
-              "type": "postback",
-              "title": "Activate/ Deactivate service",
-              "payload": "services"
-            }, {
-              "type": "postback",
-              "title": "More options ...",
-              "payload": "more..."
-            }
-          ]
-        }
-      ]
-    }
-  }
-};
-
 var token = "EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD";
 
-function sendTextMessage(sender, text) {
-  var messageData = {
-    text: text
-  };
+var dispatchRequest = function (message, sender) {
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {access_token: token},
     method: 'POST',
     json: {
       recipient: {id: sender},
-      message: messageData,
+      message: message,
     }
   }, function (error, response, body) {
     if (error) {
@@ -55,6 +21,13 @@ function sendTextMessage(sender, text) {
       console.log('Error: ', response.body.error);
     }
   });
+};
+
+function sendTextMessage(sender, text) {
+  var messageData = {
+    text: text
+  };
+  dispatchRequest(messageData, sender);
 }
 
 function sendGenericMessage(sender) {
@@ -89,26 +62,10 @@ function sendGenericMessage(sender) {
       }
     }
   };
-
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token: token},
-    method: 'POST',
-    json: {
-      recipient: {id: sender},
-      message: messageData,
-    }
-  }, function (error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
-  });
+  dispatchRequest(messageData, sender);
 }
 
 function sendImg(sender) {
-
   var messageData = {
     "attachment": {
       "type": "image",
@@ -117,43 +74,48 @@ function sendImg(sender) {
       }
     }
   };
-
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token: token},
-    method: 'POST',
-    json: {
-      recipient: {id: sender},
-      message: messageData,
-    }
-  }, function (error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
-  });
+  dispatchRequest(messageData, sender);
 }
 
 function sendOption(sender) {
-
-  var messageData = bill;
-
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token: token},
-    method: 'POST',
-    json: {
-      recipient: {id: sender},
-      message: messageData,
+  var messageData = {
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "generic",
+        "elements": [
+          {
+            "title": "Bill detail for May 2016",
+            "image_url": "http://petersapparel.parseapp.com/img/item100-thumb.png",
+            "subtitle": "You don't have any bill due. Next bill generation date is 4-April-16",
+            "buttons": [
+              {
+                "type": "web_url",
+                "url": "https://www.google.com",
+                "title": "Bill details"
+              }, {
+                "type": "postback",
+                "title": "Activate/ Deactivate service",
+                "payload": "services"
+              }, {
+                "type": "postback",
+                "title": "More options ...",
+                "payload": "more..."
+              }
+            ]
+          }
+        ]
+      }
     }
-  }, function (error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
-  });
+  };
+  dispatchRequest(messageData, sender);
+}
+
+function services(sender){
+  var messageData = {
+    text: 'services called'
+  };
+  dispatchRequest(messageData, sender);
 }
 
 app.set('port', (process.env.PORT || 5000));
@@ -171,22 +133,23 @@ app.post('/webhook/', function (req, res) {
     sender = event.sender.id;
     if (event.message && event.message.text) {
       text = event.message.text;
-      if (text === 'Generic') {
-        sendGenericMessage(sender);
-        continue;
-      } else if (text === 'img') {
-        sendImg(sender);
-        continue;
-      } else if (text === 'option') {
-        sendOption(sender);
-        continue;
-      } else {
-        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
+      switch (text) {
+        case 'Generic':
+          sendGenericMessage(sender);
+          break;
+        case 'img':
+          sendImg(sender);
+          break;
+        case 'option':
+          sendOption(sender);
+          break;
+        default:
+          sendTextMessage(sender, text.substring(0, 200));
       }
     } else if (event.postback) {
-      console.log(event.postback);
-      text = JSON.stringify(event.postback);
-      sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token);
+      var action = event.postback.payload;
+      global[action](sender);
+      // sendTextMessage(sender, "Postback received: " + text.substring(0, 200));
       continue;
     }
   }
