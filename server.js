@@ -32,53 +32,6 @@ function sendTextMessage(sender, text) {
   dispatchRequest(messageData, sender);
 }
 
-function sendGenericMessage(sender) {
-  var messageData = {
-    "attachment": {
-      "type": "template",
-      "payload": {
-        "template_type": "generic",
-        "elements": [{
-          "title": "First card",
-          "subtitle": "Element #1 of an hscroll",
-          "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-          "buttons": [{
-            "type": "web_url",
-            "url": "https://www.messenger.com/",
-            "title": "Web url"
-          }, {
-            "type": "postback",
-            "title": "Postback",
-            "payload": "Payload for first element in a generic bubble",
-          }]
-        }, {
-          "title": "Second card",
-          "subtitle": "Element #2 of an hscroll",
-          "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-          "buttons": [{
-            "type": "postback",
-            "title": "Postback",
-            "payload": "Payload for second element in a generic bubble",
-          }]
-        }]
-      }
-    }
-  };
-  dispatchRequest(messageData, sender);
-}
-
-function sendImg(sender) {
-  var messageData = {
-    "attachment": {
-      "type": "image",
-      "payload": {
-        "url": "http://hosting.datacopia.com/publish/20160511.074647.b84751e2-a810-4f45-89c3-1bd998e456ce.png"
-      }
-    }
-  };
-  dispatchRequest(messageData, sender);
-}
-
 function sendOption(sender) {
   var messageData = {
     "attachment": {
@@ -125,17 +78,12 @@ app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i];
+    console.log(event.sender);
     sender = event.sender.id;
     if (event.message && event.message.text) {
       text = event.message.text;
       switch (text) {
-        case 'Generic':
-          sendGenericMessage(sender);
-          break;
-        case 'img':
-          sendImg(sender);
-          break;
-        case 'option':
+        case 'hi':
           sendOption(sender);
           break;
         default:

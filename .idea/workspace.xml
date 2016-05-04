@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34742435-f4d7-49f6-8448-a21de5d37e62" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/postbakcs.js" afterPath="$PROJECT_DIR$/postbakcs.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.js" afterPath="$PROJECT_DIR$/server.js" />
     </list>
     <ignored path="fm.iws" />
@@ -24,35 +23,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="server.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1081">
-              <caret line="118" column="50" selection-start-line="118" selection-start-column="50" selection-end-line="118" selection-end-column="50" />
+            <state relative-caret-position="529">
+              <caret line="80" column="30" selection-start-line="80" selection-start-column="30" selection-end-line="80" selection-end-column="30" />
               <folding>
                 <element signature="e#649#819#0" expanded="false" />
                 <element signature="e#666#726#0" expanded="false" />
                 <element signature="e#757#815#0" expanded="false" />
-                <element signature="e#1030#1963#0" expanded="false" />
-                <element signature="e#1075#1957#0" expanded="false" />
-                <element signature="e#1133#1949#0" expanded="false" />
-                <element signature="e#1134#1601#0" expanded="false" />
-                <element signature="e#1313#1591#0" expanded="false" />
-                <element signature="e#1314#1438#0" expanded="false" />
-                <element signature="e#1440#1590#0" expanded="false" />
-                <element signature="e#1603#1948#0" expanded="false" />
-                <element signature="e#1785#1938#0" expanded="false" />
-                <element signature="e#1786#1937#0" expanded="false" />
-                <element signature="e#2079#2247#0" expanded="false" />
-                <element signature="e#2121#2241#0" expanded="false" />
+                <element signature="n#!!block;n#sendTextMessage#0" expanded="false" />
                 <element signature="n#!!block;n#sendOption#0" expanded="false" />
-                <element signature="e#4294#4360#0" expanded="false" />
+                <element signature="e#2834#2900#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="postbakcs.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="postbakcs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/postbakcs.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="207">
@@ -89,9 +77,9 @@
       <list>
         <option value="$PROJECT_DIR$/messages.js" />
         <option value="$PROJECT_DIR$/config.js" />
-        <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/dispatch.js" />
         <option value="$PROJECT_DIR$/postbakcs.js" />
+        <option value="$PROJECT_DIR$/server.js" />
       </list>
     </option>
   </component>
@@ -241,12 +229,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1462344414748</updated>
-      <workItem from="1462344415957" duration="5689000" />
+      <workItem from="1462344415957" duration="6142000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5689000" />
+    <option name="totallyTimeSpent" value="6142000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1130" extended-state="6" />
@@ -297,29 +285,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server.js">
+    <entry file="file://$PROJECT_DIR$/postbakcs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1081">
-          <caret line="118" column="50" selection-start-line="118" selection-start-column="50" selection-end-line="118" selection-end-column="50" />
-          <folding>
-            <element signature="e#649#819#0" expanded="false" />
-            <element signature="e#666#726#0" expanded="false" />
-            <element signature="e#757#815#0" expanded="false" />
-            <element signature="e#1030#1963#0" expanded="false" />
-            <element signature="e#1075#1957#0" expanded="false" />
-            <element signature="e#1133#1949#0" expanded="false" />
-            <element signature="e#1134#1601#0" expanded="false" />
-            <element signature="e#1313#1591#0" expanded="false" />
-            <element signature="e#1314#1438#0" expanded="false" />
-            <element signature="e#1440#1590#0" expanded="false" />
-            <element signature="e#1603#1948#0" expanded="false" />
-            <element signature="e#1785#1938#0" expanded="false" />
-            <element signature="e#1786#1937#0" expanded="false" />
-            <element signature="e#2079#2247#0" expanded="false" />
-            <element signature="e#2121#2241#0" expanded="false" />
-            <element signature="n#!!block;n#sendOption#0" expanded="false" />
-            <element signature="e#4294#4360#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="207">
+          <caret line="9" column="36" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -331,11 +301,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/postbakcs.js">
+    <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="36" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
-          <folding />
+        <state relative-caret-position="529">
+          <caret line="80" column="30" selection-start-line="80" selection-start-column="30" selection-end-line="80" selection-end-column="30" />
+          <folding>
+            <element signature="e#649#819#0" expanded="false" />
+            <element signature="e#666#726#0" expanded="false" />
+            <element signature="e#757#815#0" expanded="false" />
+            <element signature="n#!!block;n#sendTextMessage#0" expanded="false" />
+            <element signature="n#!!block;n#sendOption#0" expanded="false" />
+            <element signature="e#2834#2900#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
