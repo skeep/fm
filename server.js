@@ -24,16 +24,8 @@ var bill = {
               "payload": "services"
             }, {
               "type": "postback",
-              "title": "3G/ 4G",
-              "payload": "3g4g"
-            }, {
-              "type": "postback",
-              "title": "Value Added Services",
-              "payload": "vas"
-            }, {
-              "type": "postback",
-              "title": "Schedule call-back",
-              "payload": "call-back"
+              "title": "More options ...",
+              "payload": "more..."
             }
           ]
         }
