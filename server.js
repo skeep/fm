@@ -3,6 +3,8 @@ var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
 
+var postbacks = require('./postbakcs.js');
+
 var token = "EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD";
 
 var dispatchRequest = function (message, sender) {
@@ -111,14 +113,14 @@ function sendOption(sender) {
   dispatchRequest(messageData, sender);
 }
 
-var postbacks = {
-  services: function (sender) {
-    var messageData = {
-      text: 'services called'
-    };
-    dispatchRequest(messageData, sender);
-  }
-};
+// var postbacks = {
+//   services: function (sender) {
+//     var messageData = {
+//       text: 'services called'
+//     };
+//     dispatchRequest(messageData, sender);
+//   }
+// };
 
 app.set('port', (process.env.PORT || 5000));
 
