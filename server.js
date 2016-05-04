@@ -3,6 +3,61 @@ var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
 
+var bill = {
+  "attachment": {
+    "type": "template",
+    "payload": {
+      "template_type": "generic",
+      "elements": [
+        {
+          "title": "Classic White T-Shirt",
+          "image_url": "http://petersapparel.parseapp.com/img/item100-thumb.png",
+          "subtitle": "Soft white cotton t-shirt is back in style",
+          "buttons": [
+            {
+              "type": "web_url",
+              "url": "https://petersapparel.parseapp.com/view_item?item_id=100",
+              "title": "View Item"
+            },
+            {
+              "type": "web_url",
+              "url": "https://petersapparel.parseapp.com/buy_item?item_id=100",
+              "title": "Buy Item"
+            },
+            {
+              "type": "postback",
+              "title": "Bookmark Item",
+              "payload": "USER_DEFINED_PAYLOAD_FOR_ITEM100"
+            }
+          ]
+        },
+        {
+          "title": "Classic Grey T-Shirt",
+          "image_url": "http://petersapparel.parseapp.com/img/item101-thumb.png",
+          "subtitle": "Soft gray cotton t-shirt is back in style",
+          "buttons": [
+            {
+              "type": "web_url",
+              "url": "https://petersapparel.parseapp.com/view_item?item_id=101",
+              "title": "View Item"
+            },
+            {
+              "type": "web_url",
+              "url": "https://petersapparel.parseapp.com/buy_item?item_id=101",
+              "title": "Buy Item"
+            },
+            {
+              "type": "postback",
+              "title": "Bookmark Item",
+              "payload": "USER_DEFINED_PAYLOAD_FOR_ITEM101"
+            }
+          ]
+        }
+      ]
+    }
+  }
+};
+
 var token = "EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD";
 
 function sendTextMessage(sender, text) {
@@ -104,6 +159,27 @@ function sendImg(sender) {
   });
 }
 
+function sendOption(sender) {
+
+  var messageData = bill;
+
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {access_token: token},
+    method: 'POST',
+    json: {
+      recipient: {id: sender},
+      message: messageData,
+    }
+  }, function (error, response, body) {
+    if (error) {
+      console.log('Error sending message: ', error);
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error);
+    }
+  });
+}
+
 app.set('port', (process.env.PORT || 5000));
 
 // parse application/x-www-form-urlencoded
@@ -126,6 +202,9 @@ app.post('/webhook/', function (req, res) {
         continue;
       } else if (text === 'img') {
         sendImg(sender);
+        continue;
+      } else if (text === 'option') {
+        sendOption(sender);
         continue;
       } else {
         sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
