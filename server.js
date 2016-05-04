@@ -6,7 +6,7 @@ var request = require('request');
 var token = "EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD";
 
 function sendTextMessage(sender, text) {
-  messageData = {
+  var messageData = {
     text: text
   };
   request({
@@ -27,7 +27,7 @@ function sendTextMessage(sender, text) {
 }
 
 function sendGenericMessage(sender) {
-  messageData = {
+  var messageData = {
     "attachment": {
       "type": "template",
       "payload": {
@@ -44,7 +44,7 @@ function sendGenericMessage(sender) {
             "type": "postback",
             "title": "Postback",
             "payload": "Payload for first element in a generic bubble",
-          }],
+          }]
         }, {
           "title": "Second card",
           "subtitle": "Element #2 of an hscroll",
@@ -53,11 +53,40 @@ function sendGenericMessage(sender) {
             "type": "postback",
             "title": "Postback",
             "payload": "Payload for second element in a generic bubble",
-          }],
+          }]
         }]
       }
     }
   };
+
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {access_token: token},
+    method: 'POST',
+    json: {
+      recipient: {id: sender},
+      message: messageData,
+    }
+  }, function (error, response, body) {
+    if (error) {
+      console.log('Error sending message: ', error);
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error);
+    }
+  });
+}
+
+function sendImg(sender) {
+
+  var messageData = {
+    "attachment": {
+      "type": "image",
+      "payload": {
+        "url": "http://hosting.datacopia.com/publish/20160511.074647.b84751e2-a810-4f45-89c3-1bd998e456ce.png"
+      }
+    }
+  };
+
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {access_token: token},
@@ -81,7 +110,7 @@ app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.urlencoded({extended: false}))
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
@@ -94,6 +123,9 @@ app.post('/webhook/', function (req, res) {
       // Handle a text message from this sender
       if (text === 'Generic') {
         sendGenericMessage(sender);
+        continue;
+      } else if (text === 'img') {
+        sendImg(sender);
         continue;
       } else {
         sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
