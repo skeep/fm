@@ -111,12 +111,14 @@ function sendOption(sender) {
   dispatchRequest(messageData, sender);
 }
 
-function services(sender){
-  var messageData = {
-    text: 'services called'
-  };
-  dispatchRequest(messageData, sender);
-}
+var postbacks = {
+  services: function (sender) {
+    var messageData = {
+      text: 'services called'
+    };
+    dispatchRequest(messageData, sender);
+  }
+};
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -148,8 +150,7 @@ app.post('/webhook/', function (req, res) {
       }
     } else if (event.postback) {
       var action = event.postback.payload;
-      global[action](sender);
-      // sendTextMessage(sender, "Postback received: " + text.substring(0, 200));
+      postbacks[action](sender);
       continue;
     }
   }
