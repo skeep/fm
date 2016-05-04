@@ -10,24 +10,30 @@ var bill = {
       "template_type": "generic",
       "elements": [
         {
-          "title": "Classic White T-Shirt",
+          "title": "Bill detail for May 2016",
           "image_url": "http://petersapparel.parseapp.com/img/item100-thumb.png",
-          "subtitle": "Soft white cotton t-shirt is back in style",
+          "subtitle": "You don't have any bill due. Next bill generation date is 4-April-16",
           "buttons": [
             {
               "type": "web_url",
-              "url": "https://petersapparel.parseapp.com/view_item?item_id=100",
-              "title": "View Item"
-            },
-            {
-              "type": "web_url",
-              "url": "https://petersapparel.parseapp.com/buy_item?item_id=100",
-              "title": "Buy Item"
-            },
-            {
+              "url": "https://www.google.com",
+              "title": "Bill details"
+            }, {
               "type": "postback",
-              "title": "Bookmark Item",
-              "payload": "USER_DEFINED_PAYLOAD_FOR_ITEM100"
+              "title": "Activate/ Deactivate service",
+              "payload": "services"
+            }, {
+              "type": "postback",
+              "title": "3G/ 4G",
+              "payload": "3g4g"
+            }, {
+              "type": "postback",
+              "title": "Value Added Services",
+              "payload": "vas"
+            }, {
+              "type": "postback",
+              "title": "Schedule call-back",
+              "payload": "call-back"
             }
           ]
         }
@@ -173,8 +179,6 @@ app.post('/webhook/', function (req, res) {
     sender = event.sender.id;
     if (event.message && event.message.text) {
       text = event.message.text;
-      console.log(text);
-      // Handle a text message from this sender
       if (text === 'Generic') {
         sendGenericMessage(sender);
         continue;
@@ -187,6 +191,11 @@ app.post('/webhook/', function (req, res) {
       } else {
         sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
       }
+    } else if (event.postback) {
+      console.log(event.postback);
+      text = JSON.stringify(event.postback);
+      sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token);
+      continue;
     }
   }
   res.sendStatus(200);
