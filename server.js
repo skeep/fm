@@ -108,7 +108,7 @@ function handleMessage(event) {
 app.set('port', (process.env.PORT || 3000));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(express.static('img'));
+app.use(express.static(__dirname + '/img'));
 
 app.get('/webhook', function (req, res) {
   console.log('get webhook' + req.query['hub.verify_token']);
