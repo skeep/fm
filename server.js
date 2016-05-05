@@ -78,16 +78,16 @@ app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i];
-    console.log(event.sender);
     sender = event.sender.id;
     if (event.message && event.message.text) {
       text = event.message.text;
       switch (text) {
         case 'hi':
+          sendTextMessage(sender, text.substring(0, 200));
           sendOption(sender);
           break;
         default:
-          sendTextMessage(sender, text.substring(0, 200));
+          sendTextMessage(sender, 'I am sorry, I am unable to understand what you mean.'.substring(0, 200));
       }
     } else if (event.postback) {
       var action = event.postback.payload;
