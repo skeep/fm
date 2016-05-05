@@ -1,38 +1,24 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var request = require('request');
+var express = require('express'),
+  app = express(),
+  bodyParser = require('body-parser'),
+  request = require('request'),
+  https = require('https'),
+  _ = require('lodash');
 
-var postbacks = require('./postbakcs.js');
+var config = require('./config.js'),
+  postbacks = require('./postbakcs.js'),
+  dispatch = require('./dispatch.js');
 
-var token = "EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD";
-
-var dispatchRequest = function (message, sender) {
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token: token},
-    method: 'POST',
-    json: {
-      recipient: {id: sender},
-      message: message,
-    }
-  }, function (error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
-  });
-};
+var sessionUser;
 
 function sendTextMessage(sender, text) {
   var messageData = {
     text: text
   };
-  dispatchRequest(messageData, sender);
+  dispatch(messageData, sender);
 }
 
-function sendOption(sender) {
+function start(sender) {
   var messageData = {
     "attachment": {
       "type": "template",
@@ -40,22 +26,21 @@ function sendOption(sender) {
         "template_type": "generic",
         "elements": [
           {
-            "title": "Bill detail for May 2016",
-            "image_url": "http://petersapparel.parseapp.com/img/item100-thumb.png",
-            "subtitle": "You don't have any bill due. Next bill generation date is 4-April-16",
+            "title": "Welcome to MDL Telco",
+            "subtitle": `Hello ${sessionUser.first_name}! What would you like to do?`,
             "buttons": [
               {
-                "type": "web_url",
-                "url": "https://www.google.com",
-                "title": "Bill details"
+                "type": "postback",
+                "title": "Mobile",
+                "payload": "mobile"
               }, {
                 "type": "postback",
-                "title": "Activate/ Deactivate service",
-                "payload": "services"
+                "title": "Fixed line & Broadband",
+                "payload": "flbb"
               }, {
                 "type": "postback",
-                "title": "More options ...",
-                "payload": "more..."
+                "title": "DTH",
+                "payload": "dth"
               }
             ]
           }
@@ -63,36 +48,99 @@ function sendOption(sender) {
       }
     }
   };
-  dispatchRequest(messageData, sender);
+  dispatch(messageData, sender);
 }
 
-app.set('port', (process.env.PORT || 5000));
+function bill(sender) {
+  var messageData = {
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "generic",
+        "elements": [
+          {
+            "title": `Bill summary of ${sessionUser.phoneNumber}`,
+            "image_url": "http://boiling-gorge-79536.herokuapp.com/img/bill.png",
+            "subtitle": `To help you further choose a command`,
+            "buttons": [
+              {
+                "type": "web_url",
+                "title": "Detailed bill",
+                "url": "http://www.google.com"
+              }, {
+                "type": "postback",
+                "title": "Update Plan",
+                "payload": "update"
+              }, {
+                "type": "postback",
+                "title": "Recommended Plan",
+                "payload": "recommended"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  };
+  dispatch(messageData, sender);
+}
 
-// parse application/x-www-form-urlencoded
+function handleMessage(event) {
+  if (event.message && event.message.text) {
+    text = event.message.text;
+    if (text === 'hi') {
+      start(sender);
+    } else if (_.isNumber(+text) && text.length === 10) {
+      config.setPhoneNumber(+text);
+      sessionUser = config.getUser();
+      sendTextMessage(sender, `I have send an OTP to the phone number ${sessionUser.phoneNumber}. Please type your OTP below after you receive it.`);
+    } else if (_.isNumber(+text) && text === '1234') {
+      bill(sender);
+    } else {
+      sendTextMessage(sender, `I am sorry ${sessionUser.first_name}, I am unable to understand what you mean.`.substring(0, 200));
+    }
+  } else if (event.postback) {
+    var action = event.postback.payload;
+    postbacks[action](sender);
+  }
+}
+
+app.set('port', (process.env.PORT || 3000));
 app.use(bodyParser.urlencoded({extended: false}));
-
-// parse application/json
 app.use(bodyParser.json());
+app.use(express.static('img'));
+
+app.get('/webhook', function (req, res) {
+  console.log('get webhook' + req.query['hub.verify_token']);
+  if (req.query['hub.verify_token'] === config.token) {
+    res.send(req.query['hub.challenge']);
+  } else {
+    res.send('Error, wrong validation token');
+  }
+});
 
 app.post('/webhook/', function (req, res) {
+
   messaging_events = req.body.entry[0].messaging;
+
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i];
     sender = event.sender.id;
-    if (event.message && event.message.text) {
-      text = event.message.text;
-      switch (text) {
-        case 'hi':
-          sendTextMessage(sender, text.substring(0, 200));
-          sendOption(sender);
-          break;
-        default:
-          sendTextMessage(sender, 'I am sorry, I am unable to understand what you mean.'.substring(0, 200));
-      }
-    } else if (event.postback) {
-      var action = event.postback.payload;
-      postbacks[action](sender);
-      continue;
+
+    if (typeof config.getUser() === 'undefined') {
+      https.get('https://graph.facebook.com/v2.6/' + sender + '?access_token=' + config.token, function (res) {
+        res.setEncoding('utf8');
+        res.on('data', function (d) {
+          config.setUser(d);
+          sessionUser = config.getUser();
+          handleMessage(event);
+        });
+      }).on('error', function (e) {
+        console.error(e);
+      });
+    } else {
+      sessionUser = config.getUser();
+      handleMessage(event);
     }
   }
   res.sendStatus(200);
