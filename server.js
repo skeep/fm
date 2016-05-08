@@ -5,9 +5,12 @@ var express = require('express'),
   https = require('https'),
   _ = require('lodash');
 
-var config = require('./config.js'),
-  postbacks = require('./postbakcs.js'),
-  dispatch = require('./dispatch.js');
+var config = require('./config.js');
+
+var core = require('./core/core.js'),
+  responses = require('./artifacts/responses.js'),
+  validations = require('./artifacts/validations'),
+  expectations = require('./artifacts/expectations');
 
 var sessionUser;
 
@@ -15,93 +18,20 @@ function sendTextMessage(sender, text) {
   var messageData = {
     text: text
   };
-  dispatch(messageData, sender);
+  core.dispatch(messageData, sender);
 }
 
 function start(sender) {
-  var messageData = {
-    "attachment": {
-      "type": "template",
-      "payload": {
-        "template_type": "generic",
-        "elements": [
-          {
-            "title": "Welcome to MDL Telco",
-            "subtitle": `Hello ${sessionUser.first_name}! What would you like to do?`,
-            "buttons": [
-              {
-                "type": "postback",
-                "title": "Mobile",
-                "payload": "mobile"
-              }, {
-                "type": "postback",
-                "title": "Fixed line & Broadband",
-                "payload": "flbb"
-              }, {
-                "type": "postback",
-                "title": "DTH",
-                "payload": "dth"
-              }
-            ]
-          }
-        ]
-      }
-    }
-  };
-  dispatch(messageData, sender);
-}
-
-function bill(sender) {
-  var messageData = {
-    "attachment": {
-      "type": "template",
-      "payload": {
-        "template_type": "generic",
-        "elements": [
-          {
-            "title": `Bill summary of ${sessionUser.phoneNumber}`,
-            "image_url": "http://boiling-gorge-79536.herokuapp.com/img/bill.png",
-            "subtitle": `To help you further choose a command`,
-            "buttons": [
-              {
-                "type": "web_url",
-                "title": "Detailed bill",
-                "url": "http://www.google.com"
-              }, {
-                "type": "postback",
-                "title": "Update Plan",
-                "payload": "update"
-              }, {
-                "type": "postback",
-                "title": "Recommended Plan",
-                "payload": "recommended"
-              }
-            ]
-          }
-        ]
-      }
-    }
-  };
-  dispatch(messageData, sender);
+  core.dispatch(core.respond('start'), sender);
 }
 
 function handleMessage(event) {
   if (event.message && event.message.text) {
-    text = event.message.text;
-    if (text === 'hi') {
-      start(sender);
-    } else if (_.isNumber(+text) && text.length === 10) {
-      config.setPhoneNumber(+text);
-      sessionUser = config.getUser();
-      sendTextMessage(sender, `I have send an OTP to the phone number ${sessionUser.phoneNumber}. Please type your OTP below after you receive it.`);
-    } else if (_.isNumber(+text) && text === '1234') {
-      bill(sender);
-    } else {
-      sendTextMessage(sender, `I am sorry ${sessionUser.first_name}, I am unable to understand what you mean.`.substring(0, 200));
-    }
+    core.dispatch(core.processExpectation(event.message.text), sender);
   } else if (event.postback) {
-    var action = event.postback.payload;
-    postbacks[action](sender);
+    core.dispatch(core.processPostback(event.postback.payload), sender);
+  } else if (event.message && event.message.attachments) {
+    sendTextMessage(sender, event.message.attachments[0].payload.url);
   }
 }
 
@@ -120,6 +50,8 @@ app.get('/webhook', function (req, res) {
 });
 
 app.post('/webhook/', function (req, res) {
+
+  core.bootstrap('greetings');
 
   messaging_events = req.body.entry[0].messaging;
 
