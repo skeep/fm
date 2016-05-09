@@ -2,7 +2,6 @@
  * Created by suman on 09/05/16.
  */
 
-
 var core = require('../core/core.js');
 
 core.expectation('phoneno', function () {
@@ -28,4 +27,3 @@ core.expectation('otp', function () {
     fail: ['fail']
   };
 });
-

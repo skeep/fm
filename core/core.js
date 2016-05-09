@@ -1,9 +1,9 @@
 (function () {
 
-  var _ = require('lodash');
   var clc = require("cli-color");
   var request = require('request');
   var token = "EAAMdMrzztUMBAIHGRHpttv7BadmCY96ZAcHnXdDiwRIKKDZCpnWqpShneEM0sP6avJA7AhlZBGGInxt3ZCMIhduaFBRj6VmcQSiKF5e4XFJeaKiFA95GMH04t6TaEBlax1cyBDP621r5ITjmJuZCKTyyD2sTtpkBJxcRpy2JwhgZDZD";
+  var _ = require('lodash');
 
   var core = {}, app = {};
 
@@ -123,6 +123,11 @@
       app.expectation = initExpectation;
       app.state = {};
     }
+  };
+
+  core.init = function (config) {
+    core.bootstrap(config.expectation);
+    app.state.token = config.token;
   };
 
   core.getExpectation = function () {

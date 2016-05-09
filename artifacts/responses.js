@@ -5,6 +5,8 @@
 var core = require('../core/core.js');
 var _ = require('lodash');
 
+console.log(core);
+
 core.response('start', function () {
   return {
     attachment: {
