@@ -2,7 +2,7 @@
  * Created by suman on 09/05/16.
  */
 
-var core = require('../core/core.js');
+var core = require('chanakya');
 
 core.expectation('phoneno', function () {
   return {

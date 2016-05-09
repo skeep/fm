@@ -2,7 +2,7 @@
  * Created by suman on 09/05/16.
  */
 
-var core = require('../core/core.js');
+var core = require('chanakya');
 
 core.validator('isPhoneno', function (message) {
   return message == 9945458300;

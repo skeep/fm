@@ -2,10 +2,8 @@
  * Created by suman on 08/05/16.
  */
 
-var core = require('../core/core.js');
+var core = require('chanakya');
 var _ = require('lodash');
-
-console.log(core);
 
 core.response('start', function () {
   return {
