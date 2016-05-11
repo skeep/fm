@@ -27,9 +27,36 @@
       <file leaf-file-name="validators.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bank/validators.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="497">
-              <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
+            <state relative-caret-position="244">
+              <caret line="29" column="7" selection-start-line="29" selection-start-column="7" selection-end-line="29" selection-end-column="7" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="responses.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bank/responses.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
+              <folding>
+                <element signature="e#0#40#0" expanded="false" />
+                <element signature="e#223#324#0" expanded="false" />
+                <element signature="e#234#321#0" expanded="false" />
+                <element signature="e#489#614#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="expectations.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bank/expectations.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="115">
+              <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#40#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -301,12 +328,12 @@
       <workItem from="1462724649376" duration="31462000" />
       <workItem from="1462905307528" duration="4093000" />
       <workItem from="1462942412131" duration="4806000" />
-      <workItem from="1462947635271" duration="9046000" />
+      <workItem from="1462947635271" duration="9914000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="82189000" />
+    <option name="totallyTimeSpent" value="83057000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1130" extended-state="0" />
@@ -563,14 +590,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bank/responses.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="359">
@@ -680,6 +699,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bank/responses.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#40#0" expanded="false" />
+            <element signature="e#223#324#0" expanded="false" />
+            <element signature="e#234#321#0" expanded="false" />
+            <element signature="e#489#614#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/bank/expectations.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
@@ -692,8 +724,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bank/validators.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="497">
-          <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
+        <state relative-caret-position="244">
+          <caret line="29" column="7" selection-start-line="29" selection-start-column="7" selection-end-line="29" selection-end-column="7" />
           <folding />
         </state>
       </provider>
