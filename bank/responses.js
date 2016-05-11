@@ -15,6 +15,9 @@ core.response('fail', function (to) {
 });
 
 core.response('balance', function (to) {
+
+  console.log(to);
+  
   var deferred = Q.defer();
 
   var options = {
