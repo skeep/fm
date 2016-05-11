@@ -4,6 +4,8 @@
 
 var core = require('chanakya');
 var _ = require('lodash');
+var Q = require('q'),
+  http = require('http');
 
 core.response('start', function () {
   return {
@@ -43,9 +45,9 @@ core.response('otp', function () {
   };
 }, 'otp');
 
-core.response('fail', function () {
+core.response('fail', function (to) {
   return {
-    text: `I am sorry Suman, I am unable to understand what you mean.`
+    text: `I am sorry ${to.first_name}, I am unable to understand what you mean.`
   };
 });
 
@@ -154,3 +156,20 @@ core.response('buy', function () {
     }
   };
 });
+
+core.response('balance', function (to) {
+  var deferred = Q.defer();
+
+  http.get('http://demo1036853.mockable.io/balance', function (res) {
+    res.setEncoding('utf8');
+    res.on('data', function (d) {
+      d = JSON.parse(d);
+      deferred.resolve({
+        text: `Your balance is ${d.amount}$`
+      });
+    });
+  }).on('error', function (e) {
+    deferred.reject(new Error(e));
+  });
+  return deferred.promise;
+}, 'statement');

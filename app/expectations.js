@@ -27,3 +27,11 @@ core.expectation('otp', function () {
     fail: ['fail']
   };
 });
+
+core.expectation('statement', function () {
+  return {
+    validators : ['isStatement'],
+    success : [],
+    fail: ['fail']
+  };
+});
