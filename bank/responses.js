@@ -134,3 +134,36 @@ core.response('creditcard', function (to) {
     }
   });
 });
+core.response('payment', function (to) {
+  return {
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"generic",
+          "elements":[
+            {
+              "title":"Please see your credit card statement below.",
+              "image_url": "https://s3.amazonaws.com/facebookbot/creditcard.png",
+              "buttons":[
+                {
+                  "type":"web_url",
+                  "url":"https://www.billdesk.com/pgidsk/pgmerc/amexcard/amex_card.jsp",
+                  "title":"Pay minimum payment due"
+                },
+                {
+                  "type":"web_url",
+                  "url":"https://www.billdesk.com/pgidsk/pgmerc/amexcard/amex_card.jsp",
+                  "title":"Pay outstanding balance",
+                },
+                {
+                  "title":"Increase credit limit",
+                  "type":"web_url",
+                  "url":"https://www.americanexpress.com/in/content/credit-know-how/credit-card-limits/",
+                }
+              ]
+            }
+          ]
+        }
+      }
+    };
+  });
