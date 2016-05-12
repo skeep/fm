@@ -10,14 +10,14 @@ var rp = require('request-promise');
 
 core.response('fail', function (to) {
   return {
-    text: `I am sorry ${to.first_name}, I am unable to understand what you mean.`
+    text: `I am sorry ${to.first_name}, I am unable to understand what you mean. Please rephrase and send back.`
   };
 });
 
 core.response('balance', function (to) {
 
   console.log(to);
-  
+
   var deferred = Q.defer();
 
   var options = {
@@ -32,7 +32,7 @@ core.response('balance', function (to) {
   rp(options)
     .then(function (res) {
       deferred.resolve({
-        text: `Your balance is ${res.currency}${res.balance}`
+        text: `Your balance is =${res.currency}${res.balance}`
       });
     })
     .catch(function (err) {
