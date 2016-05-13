@@ -134,6 +134,7 @@ core.response('creditcard', function (to) {
     }
   });
 });
+
 core.response('payment', function (to) {
   return {
       "attachment":{
@@ -142,7 +143,7 @@ core.response('payment', function (to) {
           "template_type":"generic",
           "elements":[
             {
-              "title":"Please see your credit card statement below.",
+              "title":`${to.first_name}, please see your credit card statement below.`,
               "image_url": "https://s3.amazonaws.com/facebookbot/creditcard.png",
               "buttons":[
                 {
@@ -153,12 +154,12 @@ core.response('payment', function (to) {
                 {
                   "type":"web_url",
                   "url":"https://www.billdesk.com/pgidsk/pgmerc/amexcard/amex_card.jsp",
-                  "title":"Pay outstanding balance",
+                  "title":"Pay $2000"
                 },
                 {
                   "title":"Increase credit limit",
                   "type":"web_url",
-                  "url":"https://www.americanexpress.com/in/content/credit-know-how/credit-card-limits/",
+                  "url":"https://www.americanexpress.com/in/content/credit-know-how/credit-card-limits/"
                 }
               ]
             }
