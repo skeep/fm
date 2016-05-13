@@ -12,7 +12,7 @@ core.response('fail', function (to) {
   return {
     text: `I am sorry ${to.first_name}, I am unable to understand what you meant. Please rephrase and send back.`
   };
-});
+}, 'statement');
 
 core.response('balance', function (to) {
 
