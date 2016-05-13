@@ -3,7 +3,7 @@ var C = require('chanakya');
 C.bootstrap({
   mount: 'bank',
   expectation: 'statement',
-  token: 'EAAMdMrzztUMBADjXlIvWBZAxcOOt4ZBfLkRV9d2OP04sjesZC6ATPI9DOqKEhvZAZB04uwJ0ObCPZBgWKWhZANBBrGVO4n8MPH2VXsE6LmPBeF7mnDFAf8vLUQAPJKywQPsVEwBYZBKYdzZCt4kuOlDw6Ipk8gTCUGEtt1tge0Wl69QZDZD'
+  token: 'EAAMdMrzztUMBAPSsXfQVETGRsoFOrUhsaJmUEQUnNMVlpHuYSoZBmZAbUiZBXMYQr2fxbbP63j8jdd3qiymkSTe43s7uZAH5OS6oW36nvfQZC4kNJhVMn9Nax5XJQe9DqZBiL7XRZBHNKaU0y72CUuLXurOzaOPfEGx4foFUx4vTwZDZD'
 });
 
 // C.bootstrap({
