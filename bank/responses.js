@@ -133,7 +133,7 @@ core.response('creditcard', function (to) {
       console.log('Error: ', response.body.error);
     }
   });
-});
+}, 'statement');
 
 core.response('payment', function (to) {
   return {
@@ -167,4 +167,4 @@ core.response('payment', function (to) {
         }
       }
     };
-  });
+  }, 'statement');
